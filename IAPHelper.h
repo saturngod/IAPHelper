@@ -1,0 +1,40 @@
+//
+//  IAPHelper.h
+//
+//  Original Created by Ray Wenderlich on 2/28/11.
+//  Created by saturngod on 7/9/12.
+//  Copyright 2011 Ray Wenderlich. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "StoreKit/StoreKit.h"
+
+#define kProductsLoadedNotification         @"ProductsLoaded"
+#define kProductPurchasedNotification       @"ProductPurchased"
+#define kProductPurchaseFailedNotification  @"ProductPurchaseFailed"
+
+typedef void (^requestProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
+typedef void (^buyProductCompleteResponseBlock)(SKPaymentTransaction* transcation);
+typedef void (^buyProductFailResponseBlock)(SKPaymentTransaction* transcation);
+
+@interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver> {
+    NSSet * _productIdentifiers;    
+    NSArray * _products;
+    NSMutableSet * _purchasedProducts;
+    SKProductsRequest * _request;
+}
+
+@property (retain) NSSet *productIdentifiers;
+@property (retain) NSArray * products;
+@property (retain) NSMutableSet *purchasedProducts;
+@property (retain) SKProductsRequest *request;
+
+- (void)requestProductsWithCompletion:(requestProductsResponseBlock)completion;
+- (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
+
+- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail;
+
+-(void)restoreProductsWithCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail;
+
+-(BOOL)isPurchasedProductsIdentifier:(NSString*)productID;
+@end
