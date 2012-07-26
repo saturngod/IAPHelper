@@ -106,7 +106,10 @@
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     
-    self.buyProductCompleteBlock(transaction);
+    if(self.buyProductCompleteBlock!=nil)
+    {
+        self.buyProductCompleteBlock(transaction);
+    }
     
 }
 
@@ -118,7 +121,10 @@
     [self provideContent: transaction.originalTransaction.payment.productIdentifier];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 
-    self.buyProductCompleteBlock(transaction);
+    if(self.buyProductCompleteBlock!=nil)
+    {
+        self.buyProductCompleteBlock(transaction);
+    }
     
 }
 
@@ -131,7 +137,9 @@
 
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+    if(self.buyProductFailBlock!=nil) {
         self.buyProductFailBlock(transaction);
+    }
     
 }
 
@@ -160,6 +168,8 @@
     self.buyProductCompleteBlock = [completion copy];
     self.buyProductFailBlock = [fail copy];
     
+    self.restoreCompletedBlock = nil;
+    self.restoreFailBlock = nil;
     SKPayment *payment = [SKPayment paymentWithProduct:productIdentifier];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
 
@@ -167,6 +177,10 @@
 
 -(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion OnFail:(resoreProductsFailResponseBlock)fail{
 
+    //clear it
+    self.buyProductCompleteBlock = nil;
+    self.buyProductFailBlock = nil;
+    
     self.restoreCompletedBlock = [completion copy];
     self.restoreFailBlock = [fail copy];
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
