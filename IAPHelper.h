@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "StoreKit/StoreKit.h"
 
+#if ! __has_feature(objc_arc)
+#error You need to either convert your project to ARC or add the -fobjc-arc compiler flag to IAPHelper.m.
+#endif
+
 #define kProductsLoadedNotification         @"ProductsLoaded"
 #define kProductPurchasedNotification       @"ProductPurchased"
 #define kProductPurchaseFailedNotification  @"ProductPurchaseFailed"
