@@ -11,6 +11,8 @@
 @property (nonatomic,strong) requestProductsResponseBlock requestProductsBlock;
 @property (nonatomic,strong) buyProductCompleteResponseBlock buyProductCompleteBlock;
 @property (nonatomic,strong) buyProductFailResponseBlock buyProductFailBlock;
+@property (nonatomic,strong) resoreProductsCompleteResponseBlock restoreCompletedBlock;
+@property (nonatomic,strong) resoreProductsFailResponseBlock restoreFailBlock;
 @end
 
 @implementation IAPHelper
@@ -21,6 +23,8 @@
 @synthesize requestProductsBlock;
 @synthesize buyProductFailBlock;
 @synthesize buyProductCompleteBlock;
+@synthesize restoreCompletedBlock;
+@synthesize restoreFailBlock;
 
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers {
     if ((self = [super init])) {
@@ -154,13 +158,23 @@
 
 }
 
--(void)restoreProductsWithCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail {
+-(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion OnFail:(resoreProductsFailResponseBlock)fail{
 
-    self.buyProductCompleteBlock = [completion copy];
-    self.buyProductFailBlock = [fail copy];
+    self.restoreCompletedBlock = [completion copy];
+    self.restoreFailBlock = [fail copy];
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     
     
 }
+
+- (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
+    restoreFailBlock(queue,error);
+}
+
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+    self.restoreCompletedBlock(queue);
+
+}
+
 
 @end
