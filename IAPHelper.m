@@ -126,7 +126,7 @@
     
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
-        NSLog(@"Transaction error: %@", transaction.error.localizedDescription);
+        NSLog(@"Transaction error: %@ %d", transaction.error.localizedDescription,transaction.error.code);
     }
 
     
@@ -175,6 +175,9 @@
 }
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
+    
+    NSLog(@"Transaction error: %@ %d", error.localizedDescription,error.code);
+    
     restoreFailBlock(queue,error);
 }
 
