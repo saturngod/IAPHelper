@@ -66,5 +66,4 @@ In the file that you want to use in app purcahses
 
 ##Todo
 
-* Add Subscription In App Purcahses
 * Check Server Record Transaction
