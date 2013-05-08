@@ -93,7 +93,7 @@
   
     
     [self recordTransaction: transaction];
-    [self provideContent: transaction.payment.productIdentifier];
+    
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     

@@ -46,6 +46,27 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 	[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
 		 }];
 		
+##Saving Product Identifier
+
+	[[IAPShare sharedHelper].iap provideContent:productIdentifier];
+	
+##Check Already Purchase
+
+	if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
+	{
+		// require saving product identifier first
+	}	
+                            
+##Purchased Products
+
+	NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
+	
+##Restore Purchase
+
+	[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
+                        
+	}];
+                            
 #Example
 
 	if(![IAPShare sharedHelper].iap) {
@@ -77,7 +98,9 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
                         
                         if([rec[@"status"] integerValue]==0)
                         {
+	                        [[IAPShare sharedHelper].iap provideContent:productIdentifier];
                             NSLog(@"SUCCESS %@",response);
+                            NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
                         }
                         else {
                             NSLog(@"Fail");
