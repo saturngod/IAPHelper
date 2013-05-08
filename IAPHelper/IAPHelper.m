@@ -7,7 +7,7 @@
 //
 
 #import "IAPHelper.h"
-
+#import "NSString+Base64.h"
 
 #if ! __has_feature(objc_arc)
 #error You need to either convert your project to ARC or add the -fobjc-arc compiler flag to IAPHelper.m.
@@ -20,6 +20,9 @@
 @property (nonatomic,strong) buyProductFailResponseBlock buyProductFailBlock;
 @property (nonatomic,strong) resoreProductsCompleteResponseBlock restoreCompletedBlock;
 @property (nonatomic,strong) resoreProductsFailResponseBlock restoreFailBlock;
+@property (nonatomic,strong) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
+
+@property (nonatomic,strong) NSMutableData* receiptRequestData;
 @end
 
 @implementation IAPHelper
@@ -200,5 +203,85 @@
 
 }
 
+- (void)checkReceipt:(NSData*)receiptData onCompletion:(checkReceiptCompleteResponseBlock)completion
+{
+    [self checkReceipt:receiptData AndSharedSecret:nil onCompletion:completion];
+}
+- (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(checkReceiptCompleteResponseBlock)completion
+{
+    
+    self.checkReceiptCompleteBlock = [completion copy];
+
+    NSError *jsonError = nil;
+    NSString *receiptBase64 = [NSString base64StringFromData:receiptData length:[receiptData length]];
+    NSLog(@"Receipt Base64: %@",receiptBase64);
+
+
+    NSData *jsonData = nil;
+
+    if(secretKey !=nil && ![secretKey isEqualToString:@""]) {
+        jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                receiptBase64,@"receipt-data",
+                                                                secretKey,@"password",
+                                                                nil]
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&jsonError
+                        ];
+    }
+    else {
+        jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                receiptBase64,@"receipt-data",
+                                                                nil]
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&jsonError
+                        ];
+    }
+
+
+    NSString* jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
+    NSURL *requestURL = nil;
+    if(production)    
+    {
+        requestURL = [NSURL URLWithString:@"https://buy.itunes.apple.com/verifyReceipt"];
+    }
+    else {
+        requestURL = [NSURL URLWithString:@"https://sandbox.itunes.apple.com/verifyReceipt"];
+    }
+
+    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:requestURL];
+    [req setHTTPMethod:@"POST"];
+    [req setHTTPBody:jsonData];
+
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+    if(conn) {
+        self.receiptRequestData = [[NSMutableData alloc] init];
+    } else {
+        NSError* error = nil;
+        [errorDetail setValue:@"Can't create connection" forKey:NSLocalizedDescriptionKey];
+        error = [NSError errorWithDomain:@"IAPHelperError" code:100 userInfo:errorDetail];
+        self.checkReceiptCompleteBlock(nil,error);
+    }
+}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Cannot transmit receipt data. %@",[error localizedDescription]);
+    self.checkReceiptCompleteBlock(nil,error);
+    [self autorelease];
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [self.receiptRequestData setLength:0];
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [self.receiptRequestData appendData:data];
+}
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSString *response = [[NSString alloc] initWithData:self.receiptRequestData encoding:NSUTF8StringEncoding];
+    NSLog(@"iTunes response: %@",response);
+    completionBlock(response,nil);
+}
 
 @end
