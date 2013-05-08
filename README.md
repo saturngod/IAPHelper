@@ -1,17 +1,17 @@
 IAP helper for apple in app purchase. It's using ARC and Block for easy to use. Ready to use with newsstand subscription.
 
-#Require
+##Require
 
 * StoreKit
 * iOS 5 or later
 * ARC
 
-#How to use
+##How to use
 
 * Add **IAPHelper** folder to your project.
 * Add **Storekit framework**
 
-## Initialize
+### Initialize
 
 	if(![IAPShare sharedHelper].iap) {
         NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
@@ -19,55 +19,55 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
         [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
     }
     
-## Production Mode On/Off
+### Production Mode On/Off
 
 	[IAPShare sharedHelper].iap.production = NO;
 	
-## Request Products
+### Request Products
 
 	[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
      {
      
      }];
 	
-## Purchase
+### Purchase
 
 	 [[IAPShare sharedHelper].iap buyProduct:product
                                     onCompletion:^(SKPaymentTransaction* trans){
 		}];
 		
-## Check Receipt with shared secret 
+### Check Receipt with shared secret 
 
 		 [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
 		 }];
 		 
-## Check Recipt without shared secret
+### Check Recipt without shared secret
 	
 	[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
 		 }];
 		
-##Saving Product Identifier
+###Saving Product Identifier
 
 	[[IAPShare sharedHelper].iap provideContent:productIdentifier];
 	
-##Check Already Purchase
+###Check Already Purchase
 
 	if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
 	{
 		// require saving product identifier first
 	}	
                             
-##Purchased Products
+###Purchased Products
 
 	NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
 	
-##Restore Purchase
+###Restore Purchase
 
 	[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
                         
 	}];
                             
-#Example
+##Example
 
 	if(![IAPShare sharedHelper].iap) {
         NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
