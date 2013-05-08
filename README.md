@@ -1,4 +1,10 @@
-IAPHelper is base on Ray Wenderlich [tutorial](http://www.raywenderlich.com/2797/introduction-to-in-app-purchases). This library is change to ARC and Block Structure to use more easier.
+IAP helper for apple in app purchase. It's using ARC and Block for easy to use.
+
+#Require
+
+* StoreKit
+* iOS 5 or later
+* ARC
 
 #How to use
 
@@ -15,55 +21,82 @@ Add
 
 * Storekit framework
 
-In the file that you want to use in app purcahses
+## Initalize
 
-	#import IAPShare.h
-	
-	…
-	…
-	…
-	
-	if([IAPShare sharedHelper].iap) {
-		[IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
-	}
-	
-	
-## Get Product List
-
-	 [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
-       {
-       	//todo here
-       	// you can get product list from response.products 
-       	// or [[IAPShare sharedHelper].iap.products
-       	// 	
-       }];
-       
-       
-## Buy Product
-      
-        SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:indexPath.row];
-
-    [[IAPShare sharedHelper].iap buyProduct:product 
-                               onCompletion:^(SKPaymentTransaction* trans){ 
-                                   NSLog(@"Done");
-                               }
-                                     OnFail:^(SKPaymentTransaction* trans) {
-                                         NSLog(@"Error");
-                                     }];
-       
-       
-## Restore Product
-
-	[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentTransaction* trans){
-       
-        NSLog(@"Restore Done");
+	if(![IAPShare sharedHelper].iap) {
+        NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
         
-    }OnFail:^(SKPaymentTransaction* trans)
-    {
+        [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+    }
+    
+## Production Mode On/Off
+
+	[IAPShare sharedHelper].iap.production = NO;
+	
+## Request Products
+
+	[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+     {
+     
+     }];
+	
+## Purchase
+
+	 [[IAPShare sharedHelper].iap buyProduct:product
+                                    onCompletion:^(SKPaymentTransaction* trans){
+		}];
+		
+## Check Receipt with shared secret 
+
+		 [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+		 }];
+		 
+## Check Recipt without shared secret
+	
+	[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
+		 }];
+		
+#Example
+
+	if(![IAPShare sharedHelper].iap) {
+        NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
         
-    }];
+        [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+    }
+    
+	[IAPShare sharedHelper].iap.production = NO;
+	    
+    [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+     {
+         if(response > 0 ) {
+         SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
+         
+         [[IAPShare sharedHelper].iap buyProduct:product
+                                    onCompletion:^(SKPaymentTransaction* trans){
+                         
+                if(trans.error)
+                {
+                    NSLog(@"Fail %@",[trans.error localizedDescription]);
+                }
+                else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
 
+                    [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
 
-##Todo
-
-* Check Server Record Transaction
+                        //Convert JSON String to NSDictionary
+                        NSDictionary* rec = [IAPShare toJSON:response];
+                        
+                        if([rec[@"status"] integerValue]==0)
+                        {
+                            NSLog(@"SUCCESS %@",response);
+                        }
+                        else {
+                            NSLog(@"Fail");
+                        }
+                    }];
+                }
+                else if(trans.transactionState == SKPaymentTransactionStateFailed) {
+                     NSLog(@"Fail");
+                }
+                                    }];//end of buy product
+         }
+     }];

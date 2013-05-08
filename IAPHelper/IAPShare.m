@@ -26,4 +26,21 @@ static IAPShare * _sharedHelper;
     return _sharedHelper;
 }
 
++(id)toJSON:(NSString *)json
+{
+    NSError* e = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData: [json dataUsingEncoding:NSUTF8StringEncoding]
+                                    options: NSJSONReadingMutableContainers
+                                      error: &e];
+    
+    if(e==nil) {
+        return jsonObject;
+    }
+    else {
+        NSLog(@"%@",[e localizedDescription]);
+        return nil;
+    }
+    
+}
+
 @end
