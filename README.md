@@ -8,18 +8,8 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 
 #How to use
 
-Add 
-
-* IAPHelper.h
-* IAPHelper.m
-* IAPShare.h
-* IAPShare.m
-
-in your product.
-
-Add
-
-* Storekit framework
+* Add **IAPHelper** folder to your project.
+* Add **Storekit framework**
 
 ## Initialize
 
