@@ -15,12 +15,12 @@
 
 
 @interface IAPHelper()
-@property (nonatomic,strong) requestProductsResponseBlock requestProductsBlock;
-@property (nonatomic,strong) buyProductCompleteResponseBlock buyProductCompleteBlock;
-@property (nonatomic,strong) buyProductFailResponseBlock buyProductFailBlock;
-@property (nonatomic,strong) resoreProductsCompleteResponseBlock restoreCompletedBlock;
-@property (nonatomic,strong) resoreProductsFailResponseBlock restoreFailBlock;
-@property (nonatomic,strong) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
+@property (nonatomic,copy) requestProductsResponseBlock requestProductsBlock;
+@property (nonatomic,copy) buyProductCompleteResponseBlock buyProductCompleteBlock;
+@property (nonatomic,copy) buyProductFailResponseBlock buyProductFailBlock;
+@property (nonatomic,copy) resoreProductsCompleteResponseBlock restoreCompletedBlock;
+@property (nonatomic,copy) resoreProductsFailResponseBlock restoreFailBlock;
+@property (nonatomic,copy) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
 
 @property (nonatomic,strong) NSMutableData* receiptRequestData;
 @end
@@ -70,7 +70,7 @@
     
     self.request = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
     _request.delegate = self;
-    self.requestProductsBlock = [completion copy];
+    self.requestProductsBlock = completion;
     
     [_request start];
     
@@ -82,7 +82,9 @@
     self.products = response.products;
     self.request = nil;
 
-    self.requestProductsBlock (request,response);
+    if(_requestProductsBlock) {
+        _requestProductsBlock (request,response);
+    }
 
 }
 
@@ -109,9 +111,9 @@
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     
-    if(self.buyProductCompleteBlock!=nil)
+    if(_buyProductCompleteBlock)
     {
-        self.buyProductCompleteBlock(transaction);
+        _buyProductCompleteBlock(transaction);
     }
     
 }
@@ -124,9 +126,9 @@
     [self provideContent: transaction.originalTransaction.payment.productIdentifier];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 
-    if(self.buyProductCompleteBlock!=nil)
+    if(_buyProductCompleteBlock!=nil)
     {
-        self.buyProductCompleteBlock(transaction);
+        _buyProductCompleteBlock(transaction);
     }
     
 }
@@ -140,8 +142,8 @@
 
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-    if(self.buyProductFailBlock!=nil) {
-        self.buyProductFailBlock(transaction);
+    if(_buyProductFailBlock) {
+        _buyProductFailBlock(transaction);
     }
     
 }
@@ -168,8 +170,8 @@
 
 - (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail {
     
-    self.buyProductCompleteBlock = [completion copy];
-    self.buyProductFailBlock = [fail copy];
+    self.buyProductCompleteBlock = completion;
+    self.buyProductFailBlock = fail;
     
     self.restoreCompletedBlock = nil;
     self.restoreFailBlock = nil;
@@ -184,8 +186,8 @@
     self.buyProductCompleteBlock = nil;
     self.buyProductFailBlock = nil;
     
-    self.restoreCompletedBlock = [completion copy];
-    self.restoreFailBlock = [fail copy];
+    self.restoreCompletedBlock = completion;
+    self.restoreFailBlock = fail;
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     
     
@@ -194,12 +196,15 @@
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
     
     NSLog(@"Transaction error: %@ %d", error.localizedDescription,error.code);
-    
-    restoreFailBlock(queue,error);
+    if(_restoreFailBlock) {
+        _restoreFailBlock(queue,error);
+    }
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
-    self.restoreCompletedBlock(queue);
+    if(_restoreCompletedBlock) {
+        _restoreCompletedBlock(queue);
+    }
 
 }
 
@@ -210,7 +215,7 @@
 - (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(checkReceiptCompleteResponseBlock)completion
 {
     
-    self.checkReceiptCompleteBlock = [completion copy];
+    self.checkReceiptCompleteBlock = completion;
 
     NSError *jsonError = nil;
     NSString *receiptBase64 = [NSString base64StringFromData:receiptData length:[receiptData length]];
@@ -260,13 +265,19 @@
         NSError* error = nil;
         [errorDetail setValue:@"Can't create connection" forKey:NSLocalizedDescriptionKey];
         error = [NSError errorWithDomain:@"IAPHelperError" code:100 userInfo:errorDetail];
-        self.checkReceiptCompleteBlock(nil,error);
+        if(_checkReceiptCompleteBlock) {
+            _checkReceiptCompleteBlock(nil,error);
+        }
     }
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     NSLog(@"Cannot transmit receipt data. %@",[error localizedDescription]);
-    self.checkReceiptCompleteBlock(nil,error);
+    
+    if(_checkReceiptCompleteBlock) {
+        _checkReceiptCompleteBlock(nil,error);
+    }
+    
     [self autorelease];
 }
 
