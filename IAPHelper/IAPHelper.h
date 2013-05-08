@@ -10,14 +10,13 @@
 #import "StoreKit/StoreKit.h"
 
 
-typedef void (^requestProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
-typedef void (^buyProductCompleteResponseBlock)(SKPaymentTransaction* transcation);
-typedef void (^buyProductFailResponseBlock)(SKPaymentTransaction* transcation);
+typedef void (^IAPProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
+
+typedef void (^IAPbuyProductCompleteResponseBlock)(SKPaymentTransaction* transcation);
 
 typedef void (^checkReceiptCompleteResponseBlock)(NSString* response,NSError* error);
 
-typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment);
-typedef void (^resoreProductsFailResponseBlock) (SKPaymentQueue* payment,NSError* error);
+typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSError* error);
 
 @interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
@@ -27,12 +26,12 @@ typedef void (^resoreProductsFailResponseBlock) (SKPaymentQueue* payment,NSError
 @property (nonatomic,strong) SKProductsRequest *request;
 @property (nonatomic) BOOL production;
 
-- (void)requestProductsWithCompletion:(requestProductsResponseBlock)completion;
+- (void)requestProductsWithCompletion:(IAPProductsResponseBlock)completion;
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
 
-- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail;
+- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(IAPbuyProductCompleteResponseBlock)completion;
 
-- (void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion OnFail:(resoreProductsFailResponseBlock)fail;
+- (void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion;
 
 - (BOOL)isPurchasedProductsIdentifier:(NSString*)productID;
 

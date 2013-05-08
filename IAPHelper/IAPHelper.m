@@ -15,26 +15,15 @@
 
 
 @interface IAPHelper()
-@property (nonatomic,copy) requestProductsResponseBlock requestProductsBlock;
-@property (nonatomic,copy) buyProductCompleteResponseBlock buyProductCompleteBlock;
-@property (nonatomic,copy) buyProductFailResponseBlock buyProductFailBlock;
+@property (nonatomic,copy) IAPProductsResponseBlock requestProductsBlock;
+@property (nonatomic,copy) IAPbuyProductCompleteResponseBlock buyProductCompleteBlock;
 @property (nonatomic,copy) resoreProductsCompleteResponseBlock restoreCompletedBlock;
-@property (nonatomic,copy) resoreProductsFailResponseBlock restoreFailBlock;
 @property (nonatomic,copy) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
 
 @property (nonatomic,strong) NSMutableData* receiptRequestData;
 @end
 
 @implementation IAPHelper
-@synthesize productIdentifiers = _productIdentifiers;
-@synthesize products = _products;
-@synthesize purchasedProducts = _purchasedProducts;
-@synthesize request = _request;
-@synthesize requestProductsBlock;
-@synthesize buyProductFailBlock;
-@synthesize buyProductCompleteBlock;
-@synthesize restoreCompletedBlock;
-@synthesize restoreFailBlock;
 
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers {
     if ((self = [super init])) {
@@ -66,7 +55,7 @@
     return [[NSUserDefaults standardUserDefaults] boolForKey:productID];
 }
 
-- (void)requestProductsWithCompletion:(requestProductsResponseBlock)completion {
+- (void)requestProductsWithCompletion:(IAPProductsResponseBlock)completion {
     
     self.request = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
     _request.delegate = self;
@@ -142,8 +131,8 @@
 
     
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-    if(_buyProductFailBlock) {
-        _buyProductFailBlock(transaction);
+    if(_buyProductCompleteBlock) {
+        _buyProductCompleteBlock(transaction);
     }
     
 }
@@ -168,26 +157,22 @@
     }
 }
 
-- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(buyProductCompleteResponseBlock)completion OnFail:(buyProductFailResponseBlock)fail {
+- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(IAPbuyProductCompleteResponseBlock)completion {
     
     self.buyProductCompleteBlock = completion;
-    self.buyProductFailBlock = fail;
     
     self.restoreCompletedBlock = nil;
-    self.restoreFailBlock = nil;
     SKPayment *payment = [SKPayment paymentWithProduct:productIdentifier];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
 
 }
 
--(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion OnFail:(resoreProductsFailResponseBlock)fail{
+-(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion {
 
     //clear it
     self.buyProductCompleteBlock = nil;
-    self.buyProductFailBlock = nil;
     
     self.restoreCompletedBlock = completion;
-    self.restoreFailBlock = fail;
     [[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
     
     
@@ -196,14 +181,14 @@
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
     
     NSLog(@"Transaction error: %@ %d", error.localizedDescription,error.code);
-    if(_restoreFailBlock) {
-        _restoreFailBlock(queue,error);
+    if(_restoreCompletedBlock) {
+        _restoreCompletedBlock(queue,error);
     }
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
     if(_restoreCompletedBlock) {
-        _restoreCompletedBlock(queue);
+        _restoreCompletedBlock(queue,nil);
     }
 
 }
@@ -225,13 +210,13 @@
     NSData *jsonData = nil;
 
     if(secretKey !=nil && ![secretKey isEqualToString:@""]) {
-        jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                receiptBase64,@"receipt-data",
-                                                                secretKey,@"password",
-                                                                nil]
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&jsonError
-                        ];
+        
+        jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:receiptBase64,@"receipt-data",
+                                                            secretKey,@"password",
+                                                            nil]
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:&jsonError];
+        
     }
     else {
         jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -243,10 +228,10 @@
     }
 
 
-    NSString* jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//    NSString* jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 
     NSURL *requestURL = nil;
-    if(production)    
+    if(_production)
     {
         requestURL = [NSURL URLWithString:@"https://buy.itunes.apple.com/verifyReceipt"];
     }
@@ -263,6 +248,7 @@
         self.receiptRequestData = [[NSMutableData alloc] init];
     } else {
         NSError* error = nil;
+        NSMutableDictionary* errorDetail = [[NSMutableDictionary alloc] init];
         [errorDetail setValue:@"Can't create connection" forKey:NSLocalizedDescriptionKey];
         error = [NSError errorWithDomain:@"IAPHelperError" code:100 userInfo:errorDetail];
         if(_checkReceiptCompleteBlock) {
@@ -278,7 +264,6 @@
         _checkReceiptCompleteBlock(nil,error);
     }
     
-    [self autorelease];
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -291,8 +276,10 @@
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSString *response = [[NSString alloc] initWithData:self.receiptRequestData encoding:NSUTF8StringEncoding];
-    NSLog(@"iTunes response: %@",response);
-    completionBlock(response,nil);
+    
+    if(_checkReceiptCompleteBlock) {
+        _checkReceiptCompleteBlock(response,nil);
+    }
 }
 
 @end
