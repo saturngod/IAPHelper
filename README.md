@@ -1,4 +1,10 @@
-IAPHelper is base on Ray Wenderlich [tutorial](http://www.raywenderlich.com/2797/introduction-to-in-app-purchases). This library is change to ARC and Block Structure to use more easier.
+IAP helper for apple in app purchase. It's using ARC and Block for easy to use.
+
+#Require
+
+* StoreKit
+* iOS 5 or later
+* ARC
 
 #How to use
 
@@ -15,7 +21,41 @@ Add
 
 * Storekit framework
 
+## Initalize
 
+	if(![IAPShare sharedHelper].iap) {
+        NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
+        
+        [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+    }
+    
+## Production Mode On/Off
+
+	[IAPShare sharedHelper].iap.production = NO;
+	
+## Request Products
+
+	[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+     {
+     
+     }];
+	
+## Purchase
+
+	 [[IAPShare sharedHelper].iap buyProduct:product
+                                    onCompletion:^(SKPaymentTransaction* trans){
+		}];
+		
+## Check Receipt with shared secret 
+
+		 [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+		 }];
+		 
+## Check Recipt without shared secret
+	
+	[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
+		 }];
+		
 #Example
 
 	if(![IAPShare sharedHelper].iap) {
@@ -41,7 +81,8 @@ Add
                 else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
 
                     [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
-                        
+
+                        //Convert JSON String to NSDictionary
                         NSDictionary* rec = [IAPShare toJSON:response];
                         
                         if([rec[@"status"] integerValue]==0)

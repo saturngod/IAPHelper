@@ -37,9 +37,8 @@
             BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
             if (productPurchased) {
                 [purchasedProducts addObject:productIdentifier];
-                NSLog(@"Previously purchased: %@", productIdentifier);
+                
             }
-            NSLog(@"Not purchased: %@", productIdentifier);
         }
         
         [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
@@ -67,7 +66,6 @@
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
     
-    NSLog(@"Received products results...");   
     self.products = response.products;
     self.request = nil;
 
@@ -83,7 +81,6 @@
 
 - (void)provideContent:(NSString *)productIdentifier {
     
-    NSLog(@"Toggling flag for: %@", productIdentifier);
     [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:productIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [_purchasedProducts addObject:productIdentifier];
@@ -93,7 +90,7 @@
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
     
-    NSLog(@"completeTransaction...");
+  
     
     [self recordTransaction: transaction];
     [self provideContent: transaction.payment.productIdentifier];
@@ -109,7 +106,6 @@
 
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction {
     
-    NSLog(@"restoreTransaction...");
     
     [self recordTransaction: transaction];
     [self provideContent: transaction.originalTransaction.payment.productIdentifier];
@@ -204,7 +200,6 @@
 
     NSError *jsonError = nil;
     NSString *receiptBase64 = [NSString base64StringFromData:receiptData length:[receiptData length]];
-    NSLog(@"Receipt Base64: %@",receiptBase64);
 
 
     NSData *jsonData = nil;
