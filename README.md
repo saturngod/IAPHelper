@@ -1,4 +1,4 @@
-IAP helper for apple in app purchase. It's using ARC and Block for easy to use.
+IAP helper for apple in app purchase. It's using ARC and Block for easy to use. Ready to use with newsstand subscription.
 
 #Require
 
@@ -21,7 +21,7 @@ Add
 
 * Storekit framework
 
-## Initalize
+## Initialize
 
 	if(![IAPShare sharedHelper].iap) {
         NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
