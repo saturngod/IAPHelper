@@ -12,11 +12,11 @@
 
 typedef void (^IAPProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
 
-typedef void (^IAPbuyProductCompleteResponseBlock)(SKPaymentTransaction* transcation);
+typedef void (^IAPbuyProductCompleteResponseBlock)(SKPaymentTransaction* transaction);
 
 typedef void (^checkReceiptCompleteResponseBlock)(NSString* response,NSError* error);
 
-typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSError* error);
+typedef void (^restoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSError* error);
 
 @interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
@@ -31,7 +31,7 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 
 - (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(IAPbuyProductCompleteResponseBlock)completion;
 
-- (void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion;
+- (void)restoreProductsWithCompletion:(restoreProductsCompleteResponseBlock)completion;
 
 - (BOOL)isPurchasedProductsIdentifier:(NSString*)productID;
 
