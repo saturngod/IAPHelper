@@ -8,6 +8,7 @@
 
 #import "IAPHelper.h"
 #import "NSString+Base64.h"
+#import "SFHFKeychainUtils.h"
 
 #if ! __has_feature(objc_arc)
 #error You need to either convert your project to ARC or add the -fobjc-arc compiler flag to IAPHelper.m.
@@ -17,7 +18,7 @@
 @interface IAPHelper()
 @property (nonatomic,copy) IAPProductsResponseBlock requestProductsBlock;
 @property (nonatomic,copy) IAPbuyProductCompleteResponseBlock buyProductCompleteBlock;
-@property (nonatomic,copy) restoreProductsCompleteResponseBlock restoreCompletedBlock;
+@property (nonatomic,copy) resoreProductsCompleteResponseBlock restoreCompletedBlock;
 @property (nonatomic,copy) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
 
 @property (nonatomic,strong) NSMutableData* receiptRequestData;
@@ -34,7 +35,15 @@
         // Check for previously purchased products
         NSMutableSet * purchasedProducts = [NSMutableSet set];
         for (NSString * productIdentifier in _productIdentifiers) {
-            BOOL productPurchased = [[NSUserDefaults standardUserDefaults] boolForKey:productIdentifier];
+            
+            BOOL productPurchased = NO;
+            
+            NSString* password = [SFHFKeychainUtils getPasswordForUsername:productIdentifier andServiceName:@"IAPHelper" error:nil];
+            if([password isEqualToString:@"YES"])
+            {
+                productPurchased = YES;
+            }
+            
             if (productPurchased) {
                 [purchasedProducts addObject:productIdentifier];
                 
@@ -51,7 +60,16 @@
 
 -(BOOL)isPurchasedProductsIdentifier:(NSString*)productID
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:productID];
+
+    BOOL productPurchased = NO;
+    
+    NSString* password = [SFHFKeychainUtils getPasswordForUsername:productID andServiceName:@"IAPHelper" error:nil];
+    if([password isEqualToString:@"YES"])
+    {
+        productPurchased = YES;
+    }
+
+    return productPurchased;
 }
 
 - (void)requestProductsWithCompletion:(IAPProductsResponseBlock)completion {
@@ -81,8 +99,8 @@
 
 - (void)provideContent:(NSString *)productIdentifier {
     
-    [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:productIdentifier];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [SFHFKeychainUtils storeUsername:productIdentifier andPassword:@"YES" forServiceName:@"IAPHelper" updateExisting:YES error:nil];
+    
     [_purchasedProducts addObject:productIdentifier];
     
 
@@ -122,7 +140,7 @@
     
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
-        NSLog(@"Transaction error: %@ %d", transaction.error.localizedDescription,transaction.error.code);
+        NSLog(@"Transaction error: %@ %ld", transaction.error.localizedDescription,(long)transaction.error.code);
     }
 
     
@@ -163,7 +181,7 @@
 
 }
 
--(void)restoreProductsWithCompletion:(restoreProductsCompleteResponseBlock)completion {
+-(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion {
 
     //clear it
     self.buyProductCompleteBlock = nil;
@@ -176,7 +194,7 @@
 
 - (void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error {
     
-    NSLog(@"Transaction error: %@ %d", error.localizedDescription,error.code);
+    NSLog(@"Transaction error: %@ %ld", error.localizedDescription,(long)error.code);
     if(_restoreCompletedBlock) {
         _restoreCompletedBlock(queue,error);
     }

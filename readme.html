@@ -1,0 +1,169 @@
+<html>
+    <head>
+        <title>Your Project</title>
+        <meta charset='utf-8'>
+        <style>
+           body{font-family:Arial;color:#505050;font-size:13px} 
+           h1,h2,h3 {padding-top:5px;} 
+           h1 {font-size:18px;} h2 {font-size:14px ; padding-top:20px; border-top:1px solid #CCC;} h3 {font-size:13px;margin-left:8px; color:#9090AA;padding-bottom:5px;border-bottom:1px solid #CCC;} code {background: #f3f6fb} pre > code {background: #f3f6fb !important;border: 1px solid #dbdde2;}
+            a , a:visited { color:#2badad;text-decoration: none} ul,li {list-style: none} li {padding-top:5px;} ul {padding-left: 20px} #toc > ul{padding: 0px}
+            #toc > h1 {
+                padding: 0px;
+                margin: 0px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+            #toc > ul > a li {
+                color: #9090aa;
+                padding-top: 5px;
+                font-weight: bold;
+                padding-left: 0px;
+            }
+            #toc > ul > ul {
+                padding-left: 0px;
+                padding-top: 5px;
+            }
+            #toc > ul > ul > a li:before {
+                content: "- "
+            }
+            @media all and (min-width: 747) {
+              #toc{
+                width:200px;
+                padding-right: 10px;
+                padding-left: 10px;
+                top:0px;
+                left:0px;
+                position: fixed;
+                overflow-y: auto;     
+                height: 100%         
+            }
+              #content {
+                
+                border-left:1px solid #CCC;
+                padding-left: 20px;
+                padding-right: 5px;
+              }
+              #container {
+                padding-left: 200px;
+                position: relative;
+              }
+            }
+            @media all and (max-width: 747) {
+                #toc {
+                    padding-bottom: 10px;
+                }
+                 #content {
+                
+                border-top:1px solid #CCC;
+                padding-top: 10px;
+                }
+            }
+
+        </style>
+        <link rel='stylesheet' href='http://softwaremaniacs.org/media/soft/highlight/styles/tomorrow.css'>
+</head>
+<body>
+    <div id="container">
+        <div id="toc">
+        <h1>Your Project</h1>
+        <ul><a href='#Require1'><li>Require</li></a><ul></ul><a href='#How to use2'><li>How to use</li></a><ul><a href='#Initialize3'><li>Initialize</li></a><ul></ul><a href='#Production Mode On/Off4'><li>Production Mode On/Off</li></a><ul></ul><a href='#Request Products5'><li>Request Products</li></a><ul></ul><a href='#Purchase6'><li>Purchase</li></a><ul></ul><a href='#Check Receipt with shared secret7'><li>Check Receipt with shared secret</li></a><ul></ul><a href='#Check Recipt without shared secret8'><li>Check Recipt without shared secret</li></a><ul></ul><a href='#Saving Product Identifier9'><li>Saving Product Identifier</li></a><ul></ul><a href='#Check Already Purchase10'><li>Check Already Purchase</li></a><ul></ul><a href='#Purchased Products11'><li>Purchased Products</li></a><ul></ul><a href='#Restore Purchase12'><li>Restore Purchase</li></a><ul></ul></ul><a href='#Example13'><li>Example</li></a><ul></ul></ul>
+        </div>
+        <div id="content">
+        <p>IAP helper for apple in app purchase. It&#39;s using ARC and Block for easy to use. Ready to use with newsstand subscription.</p>
+<a name="Require1"></a><h2 class="h2">Require</h2>
+<ul>
+<li>StoreKit</li>
+<li>iOS 5 or later</li>
+<li>ARC</li>
+</ul>
+<a name="How to use2"></a><h2 class="h2">How to use</h2>
+<ul>
+<li>Add <strong>IAPHelper</strong> folder to your project.</li>
+<li>Add <strong>Storekit framework</strong></li>
+</ul>
+<a name="Initialize3"></a><h3 class="h3">Initialize</h3>
+<pre><code><span class="keyword">if</span>(![IAPShare sharedHelper].iap) {
+    NSSet* dataSet = <span class="string">[[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
+
+    [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+}</span></code></pre>
+<a name="Production Mode On/Off4"></a><h3 class="h3">Production Mode On/Off</h3>
+<pre><code>[IAPShare sharedHelper]<span class="variable">.iap</span><span class="variable">.production</span> = <span class="literal">NO</span>;</code></pre>
+<a name="Request Products5"></a><h3 class="h3">Request Products</h3>
+<pre><code><span class="string">[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+ {
+
+ }];</span></code></pre>
+<a name="Purchase6"></a><h3 class="h3">Purchase</h3>
+<pre><code> <span class="string">[[IAPShare sharedHelper].iap buyProduct:product
+                                onCompletion:^(SKPaymentTransaction* trans){
+    }];</span></code></pre>
+<a name="Check Receipt with shared secret7"></a><h3 class="h3">Check Receipt with shared secret</h3>
+<pre><code>     <span class="string">[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+     }];</span></code></pre>
+<a name="Check Recipt without shared secret8"></a><h3 class="h3">Check Recipt without shared secret</h3>
+<pre><code><span class="string">[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
+     }];</span></code></pre>
+<a name="Saving Product Identifier9"></a><h3 class="h3">Saving Product Identifier</h3>
+<pre><code><span class="string">[[IAPShare sharedHelper].iap provideContent:productIdentifier];</span></code></pre>
+<a name="Check Already Purchase10"></a><h3 class="h3">Check Already Purchase</h3>
+<pre><code><span class="keyword">if</span>(<span class="string">[[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
+{
+    // require saving product identifier first
+}    </span></code></pre>
+<a name="Purchased Products11"></a><h3 class="h3">Purchased Products</h3>
+<pre><code><span class="built_in">NSLog</span>(@<span class="string">"%@"</span>,[IAPShare sharedHelper]<span class="variable">.iap</span><span class="variable">.purchasedProducts</span>);</code></pre>
+<a name="Restore Purchase12"></a><h3 class="h3">Restore Purchase</h3>
+<pre><code><span class="string">[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
+
+}];</span></code></pre>
+<a name="Example13"></a><h2 class="h2">Example</h2>
+<pre><code><span class="keyword">if</span>(![IAPShare sharedHelper]<span class="variable">.iap</span>) {
+    NSSet* dataSet = [[NSSet alloc] initWithObjects:@<span class="string">"com.comquas.iap.test"</span>, <span class="literal">nil</span>];
+
+    [IAPShare sharedHelper]<span class="variable">.iap</span> = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+}
+
+[IAPShare sharedHelper]<span class="variable">.iap</span><span class="variable">.production</span> = <span class="literal">NO</span>;
+
+[[IAPShare sharedHelper]<span class="variable">.iap</span> requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+ {
+     <span class="keyword">if</span>(response &gt; <span class="number">0</span> ) {
+     SKProduct* product =[[IAPShare sharedHelper]<span class="variable">.iap</span><span class="variable">.products</span> objectAtIndex:<span class="number">0</span>];
+
+     [[IAPShare sharedHelper]<span class="variable">.iap</span> buyProduct:product
+                                onCompletion:^(SKPaymentTransaction* trans){
+
+            <span class="keyword">if</span>(trans<span class="variable">.error</span>)
+            {
+                <span class="built_in">NSLog</span>(@<span class="string">"Fail %@"</span>,[trans<span class="variable">.error</span> localizedDescription]);
+            }
+            <span class="keyword">else</span> <span class="keyword">if</span>(trans<span class="variable">.transactionState</span> == SKPaymentTransactionStatePurchased) {
+
+                [[IAPShare sharedHelper]<span class="variable">.iap</span> checkReceipt:trans<span class="variable">.transactionReceipt</span> AndSharedSecret:@<span class="string">"your sharesecret"</span> onCompletion:^(<span class="built_in">NSString</span> *response, <span class="built_in">NSError</span> *error) {
+
+                    <span class="comment">//Convert JSON String to NSDictionary</span>
+                    <span class="built_in">NSDictionary</span>* rec = [IAPShare toJSON:response];
+
+                    <span class="keyword">if</span>([rec[@<span class="string">"status"</span>] integerValue]==<span class="number">0</span>)
+                    {
+                        [[IAPShare sharedHelper]<span class="variable">.iap</span> provideContent:productIdentifier];
+                        <span class="built_in">NSLog</span>(@<span class="string">"SUCCESS %@"</span>,response);
+                        <span class="built_in">NSLog</span>(@<span class="string">"Pruchases %@"</span>,[IAPShare sharedHelper]<span class="variable">.iap</span><span class="variable">.purchasedProducts</span>);
+                    }
+                    <span class="keyword">else</span> {
+                        <span class="built_in">NSLog</span>(@<span class="string">"Fail"</span>);
+                    }
+                }];
+            }
+            <span class="keyword">else</span> <span class="keyword">if</span>(trans<span class="variable">.transactionState</span> == SKPaymentTransactionStateFailed) {
+                 <span class="built_in">NSLog</span>(@<span class="string">"Fail"</span>);
+            }
+                                }];<span class="comment">//end of buy product</span>
+     }
+ }];</code></pre>
+
+        </div>
+    </div>
+</body>
+</html>
