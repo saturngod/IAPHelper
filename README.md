@@ -98,6 +98,7 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
                         
                         if([rec[@"status"] integerValue]==0)
                         {
+                        NSString *productIdentifier = trans.payment.productIdentifier;
 	                        [[IAPShare sharedHelper].iap provideContent:productIdentifier];
                             NSLog(@"SUCCESS %@",response);
                             NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
