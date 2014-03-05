@@ -13,60 +13,82 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 
 ### Initialize
 
-	if(![IAPShare sharedHelper].iap) {
-        NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
-        
-        [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
-    }
-    
+```objc
+if(![IAPShare sharedHelper].iap) {
+
+    NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
+
+    [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+
+}
+```
+
 ### Production Mode On/Off
 
-	[IAPShare sharedHelper].iap.production = NO;
-	
+```objc
+[IAPShare sharedHelper].iap.production = NO;
+```
+
 ### Request Products
 
-	[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+```objc
+[[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
      {
-     
+
      }];
-	
+```
+
 ### Purchase
 
-	 [[IAPShare sharedHelper].iap buyProduct:product
+```objc
+[[IAPShare sharedHelper].iap buyProduct:product
                                     onCompletion:^(SKPaymentTransaction* trans){
-		}];
-		
-### Check Receipt with shared secret 
+}];
+```
 
-		 [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
-		 }];
-		 
+### Check Receipt with shared secret
+
+```objc
+[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+
+}];
+```
+
 ### Check Recipt without shared secret
-	
-	[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
-		 }];
-		
+
+```objc
+[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
+
+}];
+```
+
 ###Saving Product Identifier
 
-	[[IAPShare sharedHelper].iap provideContent:productIdentifier];
-	
+```objc
+[[IAPShare sharedHelper].iap provideContent:productIdentifier];
+```
+
 ###Check Already Purchase
 
-	if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
+```objc
+if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
 	{
 		// require saving product identifier first
-	}	
-                            
+	}
+```
+
 ###Purchased Products
 
-	NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
-	
+```objc
+NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
+```
 ###Restore Purchase
 
-	[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
-		
+```objc
+[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
+
 		//check with SKPaymentQueue
-		
+
 		// number of restore count
 		int numberOfTransactions = payment.transactions.count;
 
@@ -78,27 +100,29 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 				//enable the prodcut here
 	        }
     	}
-		
-	}];
-                            
+
+}];
+```
+
 ##Example
 
+```objc
 	if(![IAPShare sharedHelper].iap) {
         NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
-        
+
         [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
     }
-    
+
 	[IAPShare sharedHelper].iap.production = NO;
-	    
+
     [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
      {
          if(response > 0 ) {
          SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
-         
+
          [[IAPShare sharedHelper].iap buyProduct:product
                                     onCompletion:^(SKPaymentTransaction* trans){
-                         
+
                 if(trans.error)
                 {
                     NSLog(@"Fail %@",[trans.error localizedDescription]);
@@ -109,7 +133,7 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 
                         //Convert JSON String to NSDictionary
                         NSDictionary* rec = [IAPShare toJSON:response];
-                        
+
                         if([rec[@"status"] integerValue]==0)
                         {
                         NSString *productIdentifier = trans.payment.productIdentifier;
@@ -127,4 +151,5 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
                 }
                                     }];//end of buy product
          }
-     }];
+}];
+```
