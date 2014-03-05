@@ -107,49 +107,49 @@ NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
 ##Example
 
 ```objc
-	if(![IAPShare sharedHelper].iap) {
-        NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
+if(![IAPShare sharedHelper].iap) {
+      NSSet* dataSet = [[NSSet alloc] initWithObjects:@"com.comquas.iap.test", nil];
 
-        [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
-    }
+      [IAPShare sharedHelper].iap = [[IAPHelper alloc] initWithProductIdentifiers:dataSet];
+  }
 
-	[IAPShare sharedHelper].iap.production = NO;
+[IAPShare sharedHelper].iap.production = NO;
 
-    [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
-     {
-         if(response > 0 ) {
-         SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
+  [[IAPShare sharedHelper].iap requestProductsWithCompletion:^(SKProductsRequest* request,SKProductsResponse* response)
+   {
+       if(response > 0 ) {
+       SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
 
-         [[IAPShare sharedHelper].iap buyProduct:product
-                                    onCompletion:^(SKPaymentTransaction* trans){
+       [[IAPShare sharedHelper].iap buyProduct:product
+                                  onCompletion:^(SKPaymentTransaction* trans){
 
-                if(trans.error)
-                {
-                    NSLog(@"Fail %@",[trans.error localizedDescription]);
-                }
-                else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
+              if(trans.error)
+              {
+                  NSLog(@"Fail %@",[trans.error localizedDescription]);
+              }
+              else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
 
-                    [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+                  [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
 
-                        //Convert JSON String to NSDictionary
-                        NSDictionary* rec = [IAPShare toJSON:response];
+                      //Convert JSON String to NSDictionary
+                      NSDictionary* rec = [IAPShare toJSON:response];
 
-                        if([rec[@"status"] integerValue]==0)
-                        {
-                        NSString *productIdentifier = trans.payment.productIdentifier;
-	                        [[IAPShare sharedHelper].iap provideContent:productIdentifier];
-                            NSLog(@"SUCCESS %@",response);
-                            NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
-                        }
-                        else {
-                            NSLog(@"Fail");
-                        }
-                    }];
-                }
-                else if(trans.transactionState == SKPaymentTransactionStateFailed) {
-                     NSLog(@"Fail");
-                }
-                                    }];//end of buy product
-         }
+                      if([rec[@"status"] integerValue]==0)
+                      {
+                      NSString *productIdentifier = trans.payment.productIdentifier;
+                        [[IAPShare sharedHelper].iap provideContent:productIdentifier];
+                          NSLog(@"SUCCESS %@",response);
+                          NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
+                      }
+                      else {
+                          NSLog(@"Fail");
+                      }
+                  }];
+              }
+              else if(trans.transactionState == SKPaymentTransactionStateFailed) {
+                   NSLog(@"Fail");
+              }
+                                  }];//end of buy product
+       }
 }];
 ```
