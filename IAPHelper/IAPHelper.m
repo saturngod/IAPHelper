@@ -201,6 +201,21 @@
 }
 
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue {
+    
+    for (SKPaymentTransaction *transaction in queue.transactions)
+    {
+        switch (transaction.transactionState)
+        {
+            case SKPaymentTransactionStateRestored:
+            {
+                [self recordTransaction: transaction];
+                [self provideContent: transaction.originalTransaction.payment.productIdentifier];
+            }
+            default:
+                break;
+        }
+    }
+    
     if(_restoreCompletedBlock) {
         _restoreCompletedBlock(queue,nil);
     }

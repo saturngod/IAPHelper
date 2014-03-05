@@ -64,7 +64,21 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 ###Restore Purchase
 
 	[[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
-                        
+		
+		//check with SKPaymentQueue
+		
+		// number of restore count
+		int numberOfTransactions = payment.transactions.count;
+
+		for (SKPaymentTransaction *transaction in payment.transactions)
+		{
+            NSString *purchased = transaction.payment.productIdentifier;
+	        if([purchased isEqualToString:@"com.myproductType.product"])
+        	{
+				//enable the prodcut here
+	        }
+    	}
+		
 	}];
                             
 ##Example
