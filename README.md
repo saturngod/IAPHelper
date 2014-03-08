@@ -82,6 +82,14 @@ if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.
 ```objc
 NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
 ```
+
+### Clear Purchases
+
+```objc
+[[IAPShare sharedHelper].iap clearSavedPurchasedProducts];
+[[IAPShare sharedHelper].iap clearSavedPurchasedProductByID:@"com.myproduct.id"];
+```
+
 ###Restore Purchase
 
 ```objc
