@@ -40,4 +40,7 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 - (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(checkReceiptCompleteResponseBlock)completion;
 
 - (void)provideContent:(NSString *)productIdentifier;
+
+- (void)clearSavedPurchasedProducts;
+- (void)clearSavedPurchasedProductByID:(NSString*)productIdentifier;
 @end

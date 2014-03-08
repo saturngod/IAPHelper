@@ -106,6 +106,20 @@
 
 }
 
+- (void)clearSavedPurchasedProducts {
+    
+    for (NSString * productIdentifier in _productIdentifiers) {
+        [self clearSavedPurchasedProductByID:productIdentifier];
+    }
+    
+}
+- (void)clearSavedPurchasedProductByID:(NSString*)productIdentifier {
+    
+    [SFHFKeychainUtils deleteItemForUsername:productIdentifier andServiceName:@"IAPHelper" error:nil];
+    [_purchasedProducts removeObject:productIdentifier];
+    
+}
+
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
     
   
