@@ -11,6 +11,13 @@ IAP helper for apple in app purchase. It's using ARC and Block for easy to use. 
 * Add **IAPHelper** folder to your project.
 * Add **Storekit framework**
 
+### Cocoapod
+
+```
+pod 'IAPHelper'
+```
+
+
 ### Initialize
 
 ```objc

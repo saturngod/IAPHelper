@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios
   s.platform     = :ios, '5.0'
   s.source       = { :git => "https://github.com/saturngod/IAPHelper.git", :tag => "1.0.7" }
-  s.source_files  = 'IAPHelper/IAPShare.h'
+  s.source_files  = 'IAPHelper/IAPShare.{h,m}'
   
   s.public_header_files = 'IAPHelper/*.h'
   s.framework  = 'StoreKit'
