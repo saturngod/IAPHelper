@@ -1,4 +1,4 @@
-IAP helper for apple in app purchase. It's using ARC and Block for easy to use. Ready to use with newsstand subscription.
+IAP helper for Apple in app purchases. It uses ARC and blocks for ease of use. Ready to use with newsstand subscriptions.
 
 ##Require
 
@@ -61,7 +61,7 @@ if(![IAPShare sharedHelper].iap) {
 }];
 ```
 
-### Check Recipt without shared secret
+### Check Receipt without shared secret
 
 ```objc
 [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
@@ -69,13 +69,13 @@ if(![IAPShare sharedHelper].iap) {
 }];
 ```
 
-###Saving Product Identifier
+### Saving Product Identifier
 
 ```objc
 [[IAPShare sharedHelper].iap provideContent:productIdentifier];
 ```
 
-###Check Already Purchase
+### Check for Previous Purchase
 
 ```objc
 if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.test"]
@@ -84,7 +84,7 @@ if([[IAPShare sharedHelper].iap isPurchasedProductsIdentifier:@"com.comquas.iap.
 	}
 ```
 
-###Purchased Products
+### Purchased Products
 
 ```objc
 NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
@@ -97,7 +97,7 @@ NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
 [[IAPShare sharedHelper].iap clearSavedPurchasedProductByID:@"com.myproduct.id"];
 ```
 
-###Restore Purchase
+### Restore Purchase
 
 ```objc
 [[IAPShare sharedHelper].iap restoreProductsWithCompletion:^(SKPaymentQueue *payment, NSError *error) {
@@ -119,7 +119,7 @@ NSLog(@"%@",[IAPShare sharedHelper].iap.purchasedProducts);
 }];
 ```
 
-##Example
+## Example
 
 ```objc
 if(![IAPShare sharedHelper].iap) {
