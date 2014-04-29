@@ -140,7 +140,12 @@
     
     
     [self recordTransaction: transaction];
-    [self provideContent: transaction.originalTransaction.payment.productIdentifier];
+    
+    if (transaction.originalTransaction)
+        [self provideContent: transaction.originalTransaction.payment.productIdentifier];
+    else
+        [self provideContent: transaction.payment.productIdentifier];
+
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 
     if(_buyProductCompleteBlock!=nil)
@@ -223,7 +228,10 @@
             case SKPaymentTransactionStateRestored:
             {
                 [self recordTransaction: transaction];
-                [self provideContent: transaction.originalTransaction.payment.productIdentifier];
+	        if (transaction.originalTransaction)
+                    [self provideContent: transaction.originalTransaction.payment.productIdentifier];
+                else
+                    [self provideContent: transaction.payment.productIdentifier];
             }
             default:
                 break;
