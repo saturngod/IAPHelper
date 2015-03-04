@@ -6,41 +6,40 @@
 //  Copyright 2011 Ray Wenderlich. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
 #import "StoreKit/StoreKit.h"
 
 
-typedef void (^IAPProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
+typedef void (^IAPRequestProductsCompletionBlock)(SKProductsRequest *request, SKProductsResponse *response, NSError *error);
+typedef void (^IAPBuyProductCompletionBlock)(SKPaymentTransaction *transcation, NSError *error);
+typedef void (^IAPCheckReceiptCompletionBlock)(NSString *response, NSError *error);
+typedef void (^IAPRestoreProductsCompletionBlock)(SKPaymentQueue *payment, NSError *error);
 
-typedef void (^IAPbuyProductCompleteResponseBlock)(SKPaymentTransaction* transcation);
-
-typedef void (^checkReceiptCompleteResponseBlock)(NSString* response,NSError* error);
-
-typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSError* error);
 
 @interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic,strong) NSSet *productIdentifiers;
-@property (nonatomic,strong) NSArray * products;
+@property (nonatomic,strong) NSArray *products;
 @property (nonatomic,strong) NSMutableSet *purchasedProducts;
 @property (nonatomic,strong) SKProductsRequest *request;
-@property (nonatomic) BOOL production;
+@property (nonatomic,assign) BOOL production;
 
-- (void)requestProductsWithCompletion:(IAPProductsResponseBlock)completion;
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
 
-- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(IAPbuyProductCompleteResponseBlock)completion;
-
-- (void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion;
+- (void)requestProductsWithCompletion:(IAPRequestProductsCompletionBlock)completion;
+- (void)buyProduct:(SKProduct *)productIdentifier onCompletion:(IAPBuyProductCompletionBlock)completion;
+- (void)provideContent:(NSString *)productIdentifier;
 
 - (BOOL)isPurchasedProductsIdentifier:(NSString*)productID;
 
-- (void)checkReceipt:(NSData*)receiptData onCompletion:(checkReceiptCompleteResponseBlock)completion;
+- (void)restoreProductsWithCompletion:(IAPRestoreProductsCompletionBlock)completion;
 
-- (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(checkReceiptCompleteResponseBlock)completion;
-
-- (void)provideContent:(NSString *)productIdentifier;
+- (void)checkReceipt:(NSData*)receiptData onCompletion:(IAPCheckReceiptCompletionBlock)completion;
+- (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(IAPCheckReceiptCompletionBlock)completion;
 
 - (void)clearSavedPurchasedProducts;
 - (void)clearSavedPurchasedProductByID:(NSString*)productIdentifier;
+
 @end
+
