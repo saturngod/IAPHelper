@@ -151,7 +151,7 @@ if(![IAPShare sharedHelper].iap) {
 
                       if([rec[@"status"] integerValue]==0)
                       {
-                      NSString *productIdentifier = trans.payment.productIdentifier;
+                      
                         [[IAPShare sharedHelper].iap provideContentWithTransaction:trans];
                           NSLog(@"SUCCESS %@",response);
                           NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
