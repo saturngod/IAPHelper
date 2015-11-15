@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.author       = { "saturngod" => "saturngod@gmail.com" }
   s.requires_arc = true
   s.platform     = :ios
-  s.platform     = :ios, '5.0'
-  s.source       = { :git => "https://github.com/saturngod/IAPHelper.git", :tag => "1.0.7" }
+  s.platform     = :ios, '6.0'
+  s.source       = { :git => "https://github.com/saturngod/IAPHelper.git", :tag => "1.0.8" }
   s.source_files = "IAPHelper/*.{h,m}"
   s.public_header_files = "IAPHelper/*.h"
   s.framework  = 'StoreKit'
