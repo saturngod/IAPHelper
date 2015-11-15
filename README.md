@@ -72,7 +72,7 @@ if(![IAPShare sharedHelper].iap) {
 ### Saving Product Identifier
 
 ```objc
-[[IAPShare sharedHelper].iap provideContent:productIdentifier];
+[[IAPShare sharedHelper].iap provideContentWithTransaction:transaction];
 ```
 
 ### Check for Previous Purchase
@@ -152,7 +152,7 @@ if(![IAPShare sharedHelper].iap) {
                       if([rec[@"status"] integerValue]==0)
                       {
                       NSString *productIdentifier = trans.payment.productIdentifier;
-                        [[IAPShare sharedHelper].iap provideContent:productIdentifier];
+                        [[IAPShare sharedHelper].iap provideContentWithTransaction:trans];
                           NSLog(@"SUCCESS %@",response);
                           NSLog(@"Pruchases %@",[IAPShare sharedHelper].iap.purchasedProducts);
                       }

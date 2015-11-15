@@ -39,7 +39,9 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 
 - (void)checkReceipt:(NSData*)receiptData AndSharedSecret:(NSString*)secretKey onCompletion:(checkReceiptCompleteResponseBlock)completion;
 
-- (void)provideContent:(NSString *)productIdentifier;
+- (void)provideContentWithTransaction:(SKPaymentTransaction *)transaction;
+
+- (void)provideContent:(NSString *)productIdentifier __deprecated_msg("use provideContentWithTransaction: instead.");
 
 - (void)clearSavedPurchasedProducts;
 - (void)clearSavedPurchasedProductByID:(NSString*)productIdentifier;
