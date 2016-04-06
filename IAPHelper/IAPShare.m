@@ -14,15 +14,14 @@
 
 @implementation IAPShare
 @synthesize iap= _iap;
-static IAPShare * _sharedHelper;
 
 + (IAPShare *) sharedHelper {
-    
-    if (_sharedHelper != nil) {
-        return _sharedHelper;
-    }
-    _sharedHelper = [[IAPShare alloc] init];
-    _sharedHelper.iap = nil;
+    static IAPShare * _sharedHelper = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedHelper = [[IAPShare alloc] init];
+        _sharedHelper.iap = nil;
+    });
     return _sharedHelper;
 }
 
