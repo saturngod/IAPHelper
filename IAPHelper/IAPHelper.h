@@ -21,7 +21,7 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 @interface IAPHelper : NSObject <SKProductsRequestDelegate, SKPaymentTransactionObserver>
 
 @property (nonatomic,strong) NSSet *productIdentifiers;
-@property (nonatomic,strong) NSArray * products;// why
+@property (nonatomic,strong) NSMutableDictionary * products;// why
 @property (nonatomic,strong) NSMutableSet *purchasedProducts;
 @property (nonatomic,strong) SKProductsRequest *request;
 @property (nonatomic) BOOL production;
