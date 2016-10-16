@@ -66,7 +66,11 @@
     }
 }
 
--(BOOL)isPurchasedProductsIdentifier:(NSString*)productID
+- (BOOL)canMakePayment{
+    return [SKPaymentQueue canMakePayments];
+}
+
+- (BOOL)isPurchasedProductsIdentifier:(NSString*)productID
 {
 
     BOOL productPurchased = NO;
