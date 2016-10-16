@@ -26,6 +26,8 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 @property (nonatomic,strong) SKProductsRequest *request;
 @property (nonatomic) BOOL production;
 
+- (BOOL)canMakePayment;
+
 - (void)requestProductsWithCompletion:(IAPProductsResponseBlock)completion;
 - (id)initWithProductIdentifiers:(NSSet *)productIdentifiers;
 
