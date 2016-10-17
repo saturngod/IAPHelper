@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "StoreKit/StoreKit.h"
 
+@protocol IAPHelperDelegate;
 
 typedef void (^IAPProductsResponseBlock)(SKProductsRequest* request , SKProductsResponse* response);
 
@@ -25,6 +26,7 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 @property (nonatomic,strong) NSMutableSet *purchasedProducts;
 @property (nonatomic,strong) SKProductsRequest *request;
 @property (nonatomic) BOOL production;
+@property (nonatomic, weak) id<IAPHelperDelegate> delegate;
 
 - (BOOL)canMakePayment;
 
@@ -47,4 +49,10 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 
 - (void)clearSavedPurchasedProducts;
 - (void)clearSavedPurchasedProductByID:(NSString*)productIdentifier;
+@end
+
+@protocol IAPHelperDelegate <NSObject>
+
+- (bool)recordTransaction:(SKPaymentTransaction*)transaction;
+
 @end

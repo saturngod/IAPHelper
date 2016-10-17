@@ -105,8 +105,16 @@
 
 }
 
-- (void)recordTransaction:(SKPaymentTransaction *)transaction {    
-    // TODO: Record the transaction on the server side...    
+- (bool)recordTransaction:(SKPaymentTransaction *)transaction {
+    
+    bool success = false;
+    if(_delegate != nil){
+        success = [_delegate recordTransaction:transaction];
+    }else{
+        success = true;
+    }
+
+    return success;
 }
 
 
@@ -152,17 +160,17 @@
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
     
-  
+    bool success = [self recordTransaction: transaction];
     
-    [self recordTransaction: transaction];
-    
-    if ([SKPaymentQueue defaultQueue]) {
-        [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
-    }
-    
-    if(_buyProductCompleteBlock)
-    {
-        _buyProductCompleteBlock(transaction);
+    if(success){
+        if ([SKPaymentQueue defaultQueue]) {
+            [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+        }
+        
+        if(_buyProductCompleteBlock)
+        {
+            _buyProductCompleteBlock(transaction);
+        }
     }
     
 }
