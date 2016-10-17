@@ -53,6 +53,6 @@ typedef void (^resoreProductsCompleteResponseBlock) (SKPaymentQueue* payment,NSE
 
 @protocol IAPHelperDelegate <NSObject>
 
-- (bool)recordTransaction:(SKPaymentTransaction*)transaction;
+- (void)recordTransaction:(SKPaymentTransaction*)transaction completion:(nonnull void(^)(bool result))completion;
 
 @end

@@ -22,6 +22,8 @@
 @property (nonatomic,copy) checkReceiptCompleteResponseBlock checkReceiptCompleteBlock;
 
 @property (nonatomic,strong) NSMutableData* receiptRequestData;
+
+- (void)recordTransaction:(SKPaymentTransaction *)transaction completion:(nonnull void(^)(bool result))completion;
 @end
 
 @implementation IAPHelper
@@ -51,7 +53,7 @@
         }
         if ([SKPaymentQueue defaultQueue]) {
             [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-        
+            
             self.purchasedProducts = purchasedProducts;
         }
         
@@ -72,7 +74,7 @@
 
 - (BOOL)isPurchasedProductsIdentifier:(NSString*)productID
 {
-
+    
     BOOL productPurchased = NO;
     
     NSString* password = [SFHFKeychainUtils getPasswordForUsername:productID andServiceName:@"IAPHelper" error:nil];
@@ -80,7 +82,7 @@
     {
         productPurchased = YES;
     }
-
+    
     return productPurchased;
 }
 
@@ -98,25 +100,25 @@
     
     self.products = response.products;
     self.request = nil;
-
+    
     if(_requestProductsBlock) {
         _requestProductsBlock (request,response);
     }
-
+    
 }
 
-- (bool)recordTransaction:(SKPaymentTransaction *)transaction {
+- (void)recordTransaction:(SKPaymentTransaction *)transaction completion:(nonnull void(^)(bool result))completion{
     
     bool success = false;
     if(_delegate != nil){
-        success = [_delegate recordTransaction:transaction];
+        [_delegate recordTransaction:transaction completion:^(bool result) {
+            completion(result);
+        }];
     }else{
-        success = true;
+        completion(true);
     }
-
-    return success;
+    
 }
-
 
 - (void)provideContentWithTransaction:(SKPaymentTransaction *)transaction {
     
@@ -140,7 +142,7 @@
     
     [_purchasedProducts addObject:productIdentifier];
     
-
+    
 }
 
 - (void)clearSavedPurchasedProducts {
@@ -160,36 +162,38 @@
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
     
-    bool success = [self recordTransaction: transaction];
-    
-    if(success){
-        if ([SKPaymentQueue defaultQueue]) {
-            [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+    [self recordTransaction:transaction completion:^(bool success) {
+        if(success){
+            if ([SKPaymentQueue defaultQueue]) {
+                [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+            }
+            
+            if(_buyProductCompleteBlock)
+            {
+                _buyProductCompleteBlock(transaction);
+            }
         }
-        
-        if(_buyProductCompleteBlock)
-        {
-            _buyProductCompleteBlock(transaction);
-        }
-    }
+    }];
     
 }
 
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction {
     
-    
-    [self recordTransaction: transaction];
-    [self provideContentWithTransaction:transaction];
-    
-    if ([SKPaymentQueue defaultQueue]) {
-        [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+    [self recordTransaction:transaction completion:^(bool result) {
+        if(result){
+            [self provideContentWithTransaction:transaction];
             
-
-        if(_buyProductCompleteBlock!=nil)
-        {
-            _buyProductCompleteBlock(transaction);
+            if ([SKPaymentQueue defaultQueue]) {
+                [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+                
+                
+                if(_buyProductCompleteBlock!=nil)
+                {
+                    _buyProductCompleteBlock(transaction);
+                }
+            }
         }
-    }
+    }];
     
 }
 
@@ -199,7 +203,7 @@
     {
         NSLog(@"Transaction error: %@ %ld", transaction.error.localizedDescription,(long)transaction.error.code);
     }
-
+    
     if ([SKPaymentQueue defaultQueue]) {
         [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
         if(_buyProductCompleteBlock) {
@@ -211,8 +215,6 @@
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
-    
-    
     for (SKPaymentTransaction *transaction in transactions)
     {
         switch (transaction.transactionState)
@@ -237,15 +239,15 @@
     
     self.restoreCompletedBlock = nil;
     SKPayment *payment = [SKPayment paymentWithProduct:productIdentifier];
-
+    
     if ([SKPaymentQueue defaultQueue]) {
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
-
+    
 }
 
 -(void)restoreProductsWithCompletion:(resoreProductsCompleteResponseBlock)completion {
-
+    
     //clear it
     self.buyProductCompleteBlock = nil;
     
@@ -276,8 +278,11 @@
         {
             case SKPaymentTransactionStateRestored:
             {
-                [self recordTransaction: transaction];
-                [self provideContentWithTransaction:transaction];
+                [self recordTransaction:transaction completion:^(bool result) {
+                    if(result){
+                        [self provideContentWithTransaction:transaction];
+                    }
+                }];
                 
             }
             default:
@@ -288,7 +293,7 @@
     if(_restoreCompletedBlock) {
         _restoreCompletedBlock(queue,nil);
     }
-
+    
 }
 
 - (void)checkReceipt:(NSData*)receiptData onCompletion:(checkReceiptCompleteResponseBlock)completion
@@ -299,13 +304,13 @@
 {
     
     self.checkReceiptCompleteBlock = completion;
-
+    
     NSError *jsonError = nil;
     NSString *receiptBase64 = [NSString base64StringFromData:receiptData length:[receiptData length]];
-
-
+    
+    
     NSData *jsonData = nil;
-
+    
     if(secretKey !=nil && ![secretKey isEqualToString:@""]) {
         
         jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:receiptBase64,@"receipt-data",
@@ -317,16 +322,16 @@
     }
     else {
         jsonData = [NSJSONSerialization dataWithJSONObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                receiptBase64,@"receipt-data",
-                                                                nil]
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&jsonError
-                        ];
+                                                            receiptBase64,@"receipt-data",
+                                                            nil]
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:&jsonError
+                    ];
     }
-
-
-//    NSString* jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
+    
+    
+    //    NSString* jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
     NSURL *requestURL = nil;
     if(_production)
     {
@@ -335,11 +340,11 @@
     else {
         requestURL = [NSURL URLWithString:@"https://sandbox.itunes.apple.com/verifyReceipt"];
     }
-
+    
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:requestURL];
     [req setHTTPMethod:@"POST"];
     [req setHTTPBody:jsonData];
-
+    
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:req delegate:self];
     if(conn) {
         self.receiptRequestData = [[NSMutableData alloc] init];
