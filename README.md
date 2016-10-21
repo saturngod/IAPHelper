@@ -53,18 +53,25 @@ if(![IAPShare sharedHelper].iap) {
 }];
 ```
 
+
+
 ### Check Receipt with shared secret
 
+For checking receipt , recommend to use only for server side. I am not recommend to use from client side directly check it. However, sometime we want to use only on client side for some reason. Use with your own risk.
+
+
 ```objc
-[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+[[IAPShare sharedHelper].iap checkReceipt:[NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]] AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
 
 }];
 ```
 
 ### Check Receipt without shared secret
 
+For checking receipt , recommend to use only for server side. I am not recommend to use from client side directly check it. However, sometime we want to use only on client side for some reason. Use with your own risk.
+
 ```objc
-[[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt onCompletion:^(NSString *response, NSError *error) {
+[[IAPShare sharedHelper].iap checkReceipt:[NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]] onCompletion:^(NSString *response, NSError *error) {
 
 }];
 ```
@@ -144,7 +151,7 @@ if(![IAPShare sharedHelper].iap) {
               }
               else if(trans.transactionState == SKPaymentTransactionStatePurchased) {
 
-                  [[IAPShare sharedHelper].iap checkReceipt:trans.transactionReceipt AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
+                  [[IAPShare sharedHelper].iap checkReceipt:[NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]] AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
 
                       //Convert JSON String to NSDictionary
                       NSDictionary* rec = [IAPShare toJSON:response];
