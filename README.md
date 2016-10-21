@@ -59,6 +59,7 @@ if(![IAPShare sharedHelper].iap) {
 
 For checking receipt , recommend to use only for server side. I am not recommend to use from client side directly check it. However, sometime we want to use only on client side for some reason. Use with your own risk.
 
+Please check [Apple guide ](https://developer.apple.com/library/content/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW2).
 
 ```objc
 [[IAPShare sharedHelper].iap checkReceipt:[NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]] AndSharedSecret:@"your sharesecret" onCompletion:^(NSString *response, NSError *error) {
@@ -69,6 +70,8 @@ For checking receipt , recommend to use only for server side. I am not recommend
 ### Check Receipt without shared secret
 
 For checking receipt , recommend to use only for server side. I am not recommend to use from client side directly check it. However, sometime we want to use only on client side for some reason. Use with your own risk.
+
+Please check [Apple guide ](https://developer.apple.com/library/content/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW2).
 
 ```objc
 [[IAPShare sharedHelper].iap checkReceipt:[NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]] onCompletion:^(NSString *response, NSError *error) {
