@@ -45,6 +45,15 @@ if(![IAPShare sharedHelper].iap) {
      }];
 ```
 
+### Get Locale Price and Title
+
+```objc
+SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
+
+NSLog(@"Price: %@",[[IAPShare sharedHelper].iap getLocalePrice:product]);
+NSLog(@"Title: %@",product.localizedTitle);
+```
+
 ### Purchase
 
 ```objc
@@ -145,7 +154,10 @@ if(![IAPShare sharedHelper].iap) {
        if(response > 0 ) {
        SKProduct* product =[[IAPShare sharedHelper].iap.products objectAtIndex:0];
 
-       [[IAPShare sharedHelper].iap buyProduct:product
+        NSLog(@"Price: %@",[[IAPShare sharedHelper].iap getLocalePrice:product]);
+        NSLog(@"Title: %@",product.localizedTitle);
+
+        [[IAPShare sharedHelper].iap buyProduct:product
                                   onCompletion:^(SKPaymentTransaction* trans){
 
               if(trans.error)

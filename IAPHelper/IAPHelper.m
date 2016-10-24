@@ -369,4 +369,18 @@
     }
 }
 
+
+- (NSString *)getLocalePrice:(SKProduct *)product {
+    if (product) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setLocale:product.priceLocale];
+        
+        return [formatter stringFromNumber:product.price];
+    }
+    return @"";
+    
+    
+}
 @end
