@@ -14,4 +14,5 @@
 + (IAPShare *) sharedHelper;
 
 +(id)toJSON:(NSString*)json;
+
 @end
