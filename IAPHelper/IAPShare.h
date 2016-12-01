@@ -14,4 +14,14 @@
 + (IAPShare *) sharedHelper;
 
 +(id)toJSON:(NSString*)json;
+
+/** 第一个参数为json字符串，就是验证凭证接口的参数；
+ 第二个参数是随机订单号
+ */
+- (void)saveIAPReceipt:(NSString *)requestParameters orderNumber:(NSString *)orderNumber;
+/** 从keychain中删除支付凭证
+ */
+- (void)deleteIAPReceiptWithOrderNumber:(NSString *)orderNumber;
+- (NSDictionary *)queryIAPReceipts;
+
 @end

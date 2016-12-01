@@ -91,7 +91,15 @@
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
     
-    self.products = response.products;
+    if (!self.products) {
+        self.products = @{}.mutableCopy;
+    }
+    [self.products removeAllObjects];
+    
+    for (SKProduct *product in response.products) {
+        
+        [self.products setObject:product forKey:product.productIdentifier];
+    }
     self.request = nil;
 
     if(_requestProductsBlock) {
