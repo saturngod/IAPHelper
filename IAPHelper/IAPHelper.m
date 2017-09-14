@@ -353,6 +353,15 @@
     
 }
 
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error
+{
+    if (request == self.request)
+    {
+        _requestProductsBlock(nil, nil);
+    }
+}
+
+
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [self.receiptRequestData setLength:0];
 }
