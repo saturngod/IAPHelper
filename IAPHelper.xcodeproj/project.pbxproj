@@ -1,0 +1,377 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6A2C39E82547E1F800D39DAF /* IAPHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2C39E02547E1F800D39DAF /* IAPHelper.m */; };
+		6A2C39E92547E1F800D39DAF /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2C39E12547E1F800D39DAF /* NSString+Base64.m */; };
+		6A2C39EA2547E1F800D39DAF /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2C39E22547E1F800D39DAF /* SFHFKeychainUtils.m */; };
+		6A2C39EB2547E1F800D39DAF /* IAPShare.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A2C39E32547E1F800D39DAF /* IAPShare.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A2C39EC2547E1F800D39DAF /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A2C39E42547E1F800D39DAF /* SFHFKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A2C39ED2547E1F800D39DAF /* NSString+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A2C39E52547E1F800D39DAF /* NSString+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A2C39EE2547E1F800D39DAF /* IAPHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A2C39E62547E1F800D39DAF /* IAPHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A2C39EF2547E1F800D39DAF /* IAPShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2C39E72547E1F800D39DAF /* IAPShare.m */; };
+		6A2C39F42547E21500D39DAF /* IAPHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A2C39F22547E21500D39DAF /* IAPHelper.h */; };
+		6A2C39FC2547E3CF00D39DAF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2C39FB2547E3CF00D39DAF /* StoreKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		6A2C39862547DB5800D39DAF /* IAPHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IAPHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A2C39E02547E1F800D39DAF /* IAPHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPHelper.m; sourceTree = "<group>"; };
+		6A2C39E12547E1F800D39DAF /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Base64.m"; sourceTree = "<group>"; };
+		6A2C39E22547E1F800D39DAF /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		6A2C39E32547E1F800D39DAF /* IAPShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPShare.h; sourceTree = "<group>"; };
+		6A2C39E42547E1F800D39DAF /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		6A2C39E52547E1F800D39DAF /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Base64.h"; sourceTree = "<group>"; };
+		6A2C39E62547E1F800D39DAF /* IAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPHelper.h; sourceTree = "<group>"; };
+		6A2C39E72547E1F800D39DAF /* IAPShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPShare.m; sourceTree = "<group>"; };
+		6A2C39F22547E21500D39DAF /* IAPHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPHelper.h; sourceTree = SOURCE_ROOT; };
+		6A2C39F32547E21500D39DAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		6A2C39FB2547E3CF00D39DAF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/iOSSupport/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6A2C39832547DB5800D39DAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A2C39FC2547E3CF00D39DAF /* StoreKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6A2C397C2547DB5800D39DAF = {
+			isa = PBXGroup;
+			children = (
+				6A2C39F12547E20100D39DAF /* Supporting files */,
+				6A2C39DF2547E1F800D39DAF /* IAPHelper */,
+				6A2C39872547DB5800D39DAF /* Products */,
+				6A2C39FA2547E3CF00D39DAF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6A2C39872547DB5800D39DAF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6A2C39862547DB5800D39DAF /* IAPHelper.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6A2C39DF2547E1F800D39DAF /* IAPHelper */ = {
+			isa = PBXGroup;
+			children = (
+				6A2C39E42547E1F800D39DAF /* SFHFKeychainUtils.h */,
+				6A2C39E22547E1F800D39DAF /* SFHFKeychainUtils.m */,
+				6A2C39E52547E1F800D39DAF /* NSString+Base64.h */,
+				6A2C39E12547E1F800D39DAF /* NSString+Base64.m */,
+				6A2C39E62547E1F800D39DAF /* IAPHelper.h */,
+				6A2C39E02547E1F800D39DAF /* IAPHelper.m */,
+				6A2C39E32547E1F800D39DAF /* IAPShare.h */,
+				6A2C39E72547E1F800D39DAF /* IAPShare.m */,
+			);
+			path = IAPHelper;
+			sourceTree = "<group>";
+		};
+		6A2C39F12547E20100D39DAF /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				6A2C39F22547E21500D39DAF /* IAPHelper.h */,
+				6A2C39F32547E21500D39DAF /* Info.plist */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		6A2C39FA2547E3CF00D39DAF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A2C39FB2547E3CF00D39DAF /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6A2C39812547DB5800D39DAF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A2C39ED2547E1F800D39DAF /* NSString+Base64.h in Headers */,
+				6A2C39EB2547E1F800D39DAF /* IAPShare.h in Headers */,
+				6A2C39EC2547E1F800D39DAF /* SFHFKeychainUtils.h in Headers */,
+				6A2C39EE2547E1F800D39DAF /* IAPHelper.h in Headers */,
+				6A2C39F42547E21500D39DAF /* IAPHelper.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		6A2C39852547DB5800D39DAF /* IAPHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6A2C398E2547DB5800D39DAF /* Build configuration list for PBXNativeTarget "IAPHelper" */;
+			buildPhases = (
+				6A2C39812547DB5800D39DAF /* Headers */,
+				6A2C39822547DB5800D39DAF /* Sources */,
+				6A2C39832547DB5800D39DAF /* Frameworks */,
+				6A2C39842547DB5800D39DAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IAPHelper;
+			productName = IAPHelper;
+			productReference = 6A2C39862547DB5800D39DAF /* IAPHelper.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6A2C397D2547DB5800D39DAF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					6A2C39852547DB5800D39DAF = {
+						CreatedOnToolsVersion = 12.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 6A2C39802547DB5800D39DAF /* Build configuration list for PBXProject "IAPHelper" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6A2C397C2547DB5800D39DAF;
+			productRefGroup = 6A2C39872547DB5800D39DAF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6A2C39852547DB5800D39DAF /* IAPHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6A2C39842547DB5800D39DAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6A2C39822547DB5800D39DAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6A2C39E92547E1F800D39DAF /* NSString+Base64.m in Sources */,
+				6A2C39E82547E1F800D39DAF /* IAPHelper.m in Sources */,
+				6A2C39EF2547E1F800D39DAF /* IAPShare.m in Sources */,
+				6A2C39EA2547E1F800D39DAF /* SFHFKeychainUtils.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6A2C398C2547DB5800D39DAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6A2C398D2547DB5800D39DAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6A2C398F2547DB5800D39DAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vigwave.IAPHelper;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6A2C39902547DB5800D39DAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vigwave.IAPHelper;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6A2C39802547DB5800D39DAF /* Build configuration list for PBXProject "IAPHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A2C398C2547DB5800D39DAF /* Debug */,
+				6A2C398D2547DB5800D39DAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6A2C398E2547DB5800D39DAF /* Build configuration list for PBXNativeTarget "IAPHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6A2C398F2547DB5800D39DAF /* Debug */,
+				6A2C39902547DB5800D39DAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6A2C397D2547DB5800D39DAF /* Project object */;
+}
